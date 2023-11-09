@@ -1,6 +1,5 @@
 ---
-title: Welcome to Quartz
+title: Welcome to my Place
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+I'm Christian.  I plan to write about my experiences and various technical notes or thoughts.  You can links to most posts to the left.  Please feel free to contact me to chat about anything machine learning, startups, or within the AEC domain.  
