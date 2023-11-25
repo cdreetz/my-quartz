@@ -11,4 +11,4 @@ People have no definitve way of measuring the relationship between colors, natur
 Now let's think of someone who can't see, but they understand numbers.  If shown the color red and the color yellow, they have no way to determine if they are similar or not, but if you tell them that they are 2 colors away from eachother, on a scale of 7 colors, they can suddently understand exactly how similar the two colors are without ever seeing them.  A computer doesn't know how similar colors are, but it knows the difference between values, and it can find these differences in huge volumes.
 
 
-This same concept can be applied to many different mediums, it's just a matter of how well humans figure out a way to represent these things in a way that can be measured.  Once 
+This same concept can be applied to many different mediums, it's just a matter of how well humans figure out a way to represent these things in a way that can be measured.  Once p 

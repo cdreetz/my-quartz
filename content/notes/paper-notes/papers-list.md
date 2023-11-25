@@ -18,4 +18,4 @@ Title: Arvix papers
 [Long Text and Multi-table Summarization: Dataset and Method](https://arxiv.org/abs/2302.03815)
 Is grouping done arbitrarily?  If taking the mean of H heads, is it not possible to ensure that all H heads in each group are the ones most similar to eachother?  PCA for heads?
 
-[FlashAttention-2: Faster Attnetion with Better Parallelism and Work Partitioning](https://arxiv.org/abs/2307.08691)
+[FlashAttention-2: Faster Attnetion with Better Parallelism and Work Partitioning](https://arxiv.org/abs/2307.08691) 
