@@ -9,3 +9,6 @@ as grouped-query attention vs multi-head and multi-query.  Evaluation will be ob
 - "Fill-in" prompting can provide some explanatory details but most importantly provides the larger portion of the desired output and the model merely filles in a praticular section while using the surrounding context
 - Analogy prompting provides additional assistance by giving some explanation, as well as an analogous example in which the desired outcome is merely an adjustment of the analogy
 - COT is typical chain of thought prompting, providing some explanation and describing some of the process, then allowing the model to take multiple steps to build up to the desired output
+
+
+Still need to figure out best way to track the evals across model variations.  W&B probably? Write out post about using wandb for LLM variation eval and comparison.  Track prompts and responses
