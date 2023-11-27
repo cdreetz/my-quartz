@@ -10,3 +10,6 @@ Generalization is one of the most important characteristics of machine learning 
 
 ### Quadruples for Fine Tuning
 Triplets have historically been a strong method for training and fine tuning language models.  While it seemed they were losing popularity, a recent case of using triples I found interesting was Google researchers using triplets in knowledge distillation by recording the rationale extracted from large models, and using the task-rationale-result triplets for fine tuning a smaller model to incorprate the learned rationale from the larger model.  I think these types fine tuning examples have lots of promise that has gone unexplored. The one hurdle in this case is being aware of token lengths in examples.  Where performance is often lost in text with lengths greater than 100k, a strong place is in most modern models is the 32k length.  Given quadruples, that leaves 8k tokens for each paper and code example.  Other questions include whether code should include comments or doc strings, or should the model be able to infer these .
+
+### Data Augmentation
+To achieve a dataset made up of quadruples, one can use the same quadruple in 4 different training examples, where each example has a different missing section.  
