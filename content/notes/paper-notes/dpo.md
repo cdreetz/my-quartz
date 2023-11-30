@@ -25,3 +25,73 @@ Reward Modeling phase:
 5. some options to model preferences are the Bradley-Terry (BT) model or Plackett-Luce ranking models
 6. using the new human annoted dataset of preferred completions, train your preference model
 
+RL Fine-Tuning phase:
+1. use the learned reward function to provide feedback to the language model
+2. beta is a parameter controlling the deviation from the base reference policy
+3. the base reference policy is initial SFT model
+4. this is an important constraint to prevent the model from deviating too far from the original distribution as wall as maintain generation diversity
+5. the objective is not differentiable as is typically optimized with RL due to the discrete nature of language generation
+
+## direct preference optimization
+
+Deriving the DPO objective 
+1. we start with the same RL objective as prior work under the general reward function r
+2. it is straightforward to show that the optimal solution to the KL-constrained reward maximization objective
+3. Z(x) is the partition function
+4. we can rearrange eq 4 to express the reward function in terms of its corresponding optimal policy modelr, the reference policy modelref and the unknown partition function Z(.)
+5. specifically we first take the logarithm of both sides of eq 4 and then with some algebra obtain the new reward eq5
+6. we can apply this reparameterization to the ground truth reward r* and corresponding optimal model model*
+7. fortunately the Bradley-Terry model depends only on the difference of rewards between two completions y1 > y2
+8. substituting the reparameterization in eq 5 for r*(x,y) into the preference model in eq 1, the partition function cancels and we can express the human prefernce probablilty in terms of only the optimal policy 
+9. now that we have the probability of human preference data in terms of the optimal policy we can formulate a maximum likelihood objective for a parametrized policy modeltheta
+10. this way we simultaneously bypass the explicit reward modeling the step while also avoiding the need to perform reinforcement elarning optimization
+11. additionally, since the procedure is equivalent to fitting a reparameterized Bradley-Terry model it enjoys certain theoretical properties
+12. such as consistencies under suitable assumption of the prefernce data distribution 
+
+
+What does DPO update do?
+1. intuitively the gradient of the loss function of L,DPO increases the likelihood of the preferred completions yw and decreases the likelihood of the dispreferred completions yl
+2. examples are weighed by how much higher the implicit reward model rtheta rates the dispreferred completions scaled by Beta
+3. ie how incorrectly the implicit reward model orders the completions accounting for the strength of the KL constraint
+4. experiments suggest the importance of this weighting as a naive version of this method without the weighting coeffiction can cause the language model to degenerate
+
+
+DPO outline
+1. sample completions y1, y2 ~ modelref( . | x ) for every prompt x
+2. label with human preferences to construct the offline dataset of preferences D
+3. optimize the language model modeltheta to minimize L,DPO for the given modelref and D and desired Beta
+4. in practice one would likely reuse preference datasets publicly available rather than generating sample and labels
+5. since the preference dataset are sampled using modelSFT we initialize modelref=modelSFT whenever available
+6. when modelSFT is not available we initialize modelref by maximizing likelihood of preferred completions (x, yw) 
+7. that is modelref = arg max E ~D [log model(yw | x)]
+8. this procedure helps mitigate the distribution shift between the true reference distribution which is unavailable and modelref by DPO
+
+
+
+
+## implementation
+"""
+def dpo_loss(pi_logps, ref_logps, yw_idxs, yl_idxs, beta):
+  '''
+  py_logps: policy logprobs, shape (B,)
+  ref_logps: reference model logprobs, shape (B,)
+  yw_idxs: preferred completion indices in [0, B-1], shape (T,)
+  yl_idxs: dispreferred completion indices in [0, B-1], shape (T,)
+  beta: temperature controlling strength of KL penalty
+
+  Each pair of (yw_idxs[i], yl_idxs[i]) represents the indices of a single preference pair
+  '''
+
+  pi_yw_logps, pi_yl_logps = pi_logps[yw_idxs], pi_logps[yl_idxs]
+  ref_yw_logps, ref_yl_logps = ref_logps[yw_idxs], ref_logps[yl_idxs]
+
+  pi_logratios = pi_yw_logps - pi_yl_logps
+  ref_logratios = ref_yw_logps - ref_yl_logps
+
+  losses = -F.logsigmoid(beta * (pi_logratios - ref_logratios))
+  rewards = beta * (pi_logps - ref_logps).detatch()
+
+  return losses, rewards
+
+
+"""
