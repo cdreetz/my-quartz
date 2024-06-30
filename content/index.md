@@ -1,7 +1,10 @@
 ---
-title: Welcome to my Place
+title: Creetz
 ---
 
-I'm Christian.  I plan to write about my experiences and various technical notes or thoughts.  You can find links to most posts to the left.  Please feel free to contact me to chat about anything machine learning, startups, or within the AEC domain.  
+I like all things related to building. Building software, building companies, building actual buildings.
 
-I love connecting with people, but I don't really care for networking.  If you reach out, do it with purpose, no matter what it is.
+Currently senior data engineer.  Mostly interested in MLE and MLOps focused projects.
+
+Previously AI engineer, lead the development of a number of RAG based chat applications, while supporting projects on new search capabilities, new recommendation systems, and put together the infrastrucutre to support them all.
+
